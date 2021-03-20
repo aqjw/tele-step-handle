@@ -1,8 +1,8 @@
 <?php
 
-namespace Aqjw\TeleStepHandler\Commands;
+namespace TeleStepHandler\Commands;
 
-use Aqjw\TeleStepHandler\TeleStepHandler;
+use TeleStepHandler\TeleStepHandler;
 use WeStacks\TeleBot\Handlers\CommandHandler;
 use WeStacks\TeleBot\Objects\Update;
 use WeStacks\TeleBot\TeleBot;

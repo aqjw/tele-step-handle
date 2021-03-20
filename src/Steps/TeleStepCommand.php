@@ -1,6 +1,6 @@
 <?php
 
-namespace Aqjw\TeleStepHandler\Steps;
+namespace TeleStepHandler\Steps;
 
 class TeleStepCommand extends TeleStepItem
 {

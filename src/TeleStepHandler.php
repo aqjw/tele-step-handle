@@ -1,8 +1,8 @@
 <?php
 
-namespace Aqjw\TeleStepHandler;
+namespace TeleStepHandler;
 
-use Aqjw\TeleStepHandler\Steps\TeleStepItem;
+use TeleStepHandler\Steps\TeleStepItem;
 
 class TeleStepHandler
 {

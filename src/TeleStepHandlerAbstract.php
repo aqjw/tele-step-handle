@@ -1,6 +1,6 @@
 <?php
 
-namespace Aqjw\TeleStepHandler;
+namespace TeleStepHandler;
 
 abstract class TeleStepHandlerAbstract
 {
