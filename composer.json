@@ -1,5 +1,6 @@
 {
     "name": "aqjw/tele-step-handler",
+    "license": "MIT",
     "authors": [
         {
             "name": "Anton Shever",
@@ -10,5 +11,10 @@
         "php": "^7.3|^8.0",
         "laravel/framework": "^8.12",
         "westacks/telebot": "^1.8"
+    },
+    "autoload": {
+        "psr-4": {
+            "Aqjw\\TeleStepHandler\\": ""
+        }
     }
 }
