@@ -1,0 +1,14 @@
+{
+    "name": "aqjw/tele-step-handler",
+    "authors": [
+        {
+            "name": "Anton Shever",
+            "email": "anton.shever96@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^7.3|^8.0",
+        "laravel/framework": "^8.12",
+        "westacks/telebot": "^1.8"
+    },
+}
