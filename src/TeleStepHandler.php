@@ -26,6 +26,7 @@ class TeleStepHandler
 
         return [
             'command' => $command,
+            'message' => $message,
             'button' => $update->callback_query->data ?? null,
             'text' => $message->text ?? null,
             'phone_number' => $message->contact->phone_number ?? null,
