@@ -26,7 +26,7 @@ class TeleStepHandler
 
         $button = null;
         $button_params = [];
-        if (! empty($update->callback_query->data) {
+        if (! empty($update->callback_query->data)) {
             $data = explode(':', $update->callback_query->data);
             $button = $data[0];
 
