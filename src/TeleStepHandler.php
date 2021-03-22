@@ -24,26 +24,12 @@ class TeleStepHandler
             $command = $update->message->text;
         }
 
-        $button = null;
-        $button_params = [];
-        if (! empty($update->callback_query->data)) {
-            $data = explode(':', $update->callback_query->data);
-            $button = $data[0];
-
-            if (! empty($data[1])) {
-                $params = explode(',', $data[1]);
-                foreach ($params as $param) {
-                    list($key, $value) = explode('=', $param);
-                    $button_params[$key] = $value;
-                }
-            }
-        }
+        $button = explode(':', $update->callback_query->data ?? '');
 
         return [
             'command' => $command,
             'message' => $message,
-            'button' => $button,
-            'button_params' => $button_params,
+            'button' => $button[0] ?? null,
             'text' => $message->text ?? null,
             'phone_number' => $message->contact->phone_number ?? null,
             'user' => self::get_user($message->chat ?? null)
@@ -71,7 +57,7 @@ class TeleStepHandler
                     foreach ($batch as $step) {
                         if ($step instanceof TeleStepItem) {
                             if ($step->condition($args)) {
-                                $break = $step->callback();
+                                $break = $step->callback($update, $args['user']);
                             }
                             if ($break) break;
                         }

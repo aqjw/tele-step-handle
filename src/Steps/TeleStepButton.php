@@ -10,4 +10,10 @@ class TeleStepButton extends TeleStepItem
             return $button == $args['button'];
         }, $callback);
     }
+
+    public function get_params($update, $user)
+    {
+        $data = explode(':', $update->callback_query->data ?? '');
+        return $this->prepare_params($data[1] ?? '');
+    }
 }
