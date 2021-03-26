@@ -1,6 +1,6 @@
 # Tele Step Handler
 
-Для упрощениея работы с телеграмом
+Simple telegram actions. Just check this shit.
 
 ## Installation
 
@@ -19,6 +19,7 @@ php artisan vendor:publish --provider="Aqjw\TeleStepHandler\TeleStepHandlerServi
 ## Usage
 
 
+ Create your step and extends with ```TeleStepHandlerAbstract```
 
 ```php
 namespace App\Telegram\Steps;
@@ -57,6 +58,17 @@ class MainSteps extends TeleStepHandlerAbstract
     }
 }
 
+```
+
+
+
+ Register your step ```App\Telegram\Steps\MainSteps::class``` in ```config/tele_step_handler.php```
+
+```php
+    'steps' => [
+        //
+        App\Telegram\Steps\MainSteps::class,
+    ],
 ```
 
 
