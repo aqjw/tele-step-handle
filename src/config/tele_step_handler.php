@@ -23,6 +23,17 @@ return [
         return null;
     },
 
+    /*-------------------------------------------------------------------------
+    | Process channel access
+    |--------------------------------------------------------------------------
+    |
+    | todo
+    |
+    */
+    'channel_access_callback' => function ($telegram_id) {
+        return null;
+    },
+
     /**
      * Send to user 
      */

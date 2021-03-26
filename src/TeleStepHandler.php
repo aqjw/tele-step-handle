@@ -11,27 +11,37 @@ class TeleStepHandler
         $process_user_callback = config('tele_step_handler.process_user_callback');
         if (empty($chat->id) || ! is_callable($process_user_callback)) return null;
         $name = trim($chat->get('first_name') . ' ' . $chat->get('last_name'));
+        if (empty(trim($name))) {
+            $name = $chat->title ?? '';
+        }
 
         return call_user_func($process_user_callback, $chat->id, $name);
     }
 
     private static function prepare_params($update)
     {
-        $message = $update->message ?? $update->callback_query->message ?? null;
+        if (empty($update->channel_post)) {
+            $message = $update->message ?? $update->callback_query->message ?? null;
+            $is_channel = false;
+        } else {
+            $message = $update->channel_post;
+            $is_channel = true;
+        }
 
         $command = null;
         if (! empty($message->entities[0]->type) && $message->entities[0]->type == 'bot_command') {
-            $command = $update->message->text;
+            $command = $update->message->text ?? $message->text ?? '';
         }
 
         $button = explode(':', $update->callback_query->data ?? '');
 
         return [
+            'is_channel' => $is_channel,
             'command' => $command,
             'message' => $message,
             'button' => $button[0] ?? null,
             'text' => $message->text ?? null,
-            'phone_number' => $message->contact->phone_number ?? null,
+            'phone_number' => $message->contact->phone_number ?? null, // Todo: move to another params
             'user' => self::get_user($message->chat ?? null)
         ];
     }
@@ -43,6 +53,8 @@ class TeleStepHandler
         }
 
         $args = self::prepare_params($update);
+        if (empty($args['user'])) return false;
+
         $steps = config('tele_step_handler.steps');
 
         foreach ($steps as $step_class) {
