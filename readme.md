@@ -41,13 +41,13 @@ class MainSteps extends TeleStepHandlerAbstract
                     ]
                 ]);
 
-                return false; // stop checking other steps
+                return true; // stop checking other steps
             }),
 
             new TeleStepButton('do_something', function () {
                 $this->bot->sendMessage(['text' => 'Something did']);
 
-                return false; // stop checking other steps
+                return true; // stop checking other steps
             }),
         ];
     }

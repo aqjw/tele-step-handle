@@ -49,7 +49,9 @@ class TeleStepHandler
     public static function apply($update, $bot)
     {
         if(config('tele_step_handler.action_typing')) {
-            $bot->sendChatAction(['action' => 'typing']);
+            try {
+                $bot->sendChatAction(['action' => 'typing']);
+            } catch (\Exception $e) {}
         }
 
         $args = self::prepare_params($update);
