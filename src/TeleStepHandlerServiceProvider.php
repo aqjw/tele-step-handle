@@ -24,7 +24,7 @@ class TeleStepHandlerServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->publishes([
-            __DIR__.'/config/tele_step_handler.php' => config_path('tele_step_handler.php'),
+            __DIR__.'/config/tele_steps.php' => config_path('tele_steps.php'),
         ], 'config');
     }
 }

@@ -62,7 +62,7 @@ class MainSteps extends TeleStepHandlerAbstract
 
 
 
- Register your step ```App\Telegram\Steps\MainSteps::class``` in ```config/tele_step_handler.php```
+ Register your step ```App\Telegram\Steps\MainSteps::class``` in ```config/tele_steps.php```
 
 ```php
     'steps' => [

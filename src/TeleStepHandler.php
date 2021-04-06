@@ -8,7 +8,7 @@ class TeleStepHandler
 {
     private static function get_user($chat)
     {
-        $process_user_callback = config('tele_step_handler.process_user_callback');
+        $process_user_callback = config('tele_steps.process_user_callback');
         if (empty($chat->id) || ! is_callable($process_user_callback)) return null;
         $name = trim($chat->get('first_name') . ' ' . $chat->get('last_name'));
         if (empty(trim($name))) {
@@ -48,7 +48,7 @@ class TeleStepHandler
 
     public static function apply($update, $bot)
     {
-        if(config('tele_step_handler.action_typing')) {
+        if(config('tele_steps.action_typing')) {
             try {
                 $bot->sendChatAction(['action' => 'typing']);
             } catch (\Exception $e) {}
@@ -57,29 +57,50 @@ class TeleStepHandler
         $args = self::prepare_params($update);
         if (empty($args['user'])) return false;
 
-        $steps = config('tele_step_handler.steps');
+        if ($args['is_channel']) {
+            $channel_steps = config('tele_steps.steps.channel');
+            foreach ($channel_steps as $step_class) {
+                $break = false;
 
-        foreach ($steps as $step_class) {
-            $break = false;
+                if (class_exists($step_class)) {
+                    $break = self::process_step($step_class, $args, $bot, $update);
+                }
 
-            if (class_exists($step_class)) {
-                $step_object = app()->make($step_class);
-                if ($step_object->trigger($args)) {
-                    $step_object->set_parameters($bot, $args);
+                if ($break) break;
+            }
+        } else {
+            $person_steps = config('tele_steps.steps.personal');
+            foreach ($person_steps as $step_class) {
+                $break = false;
 
-                    $batch = (array) $step_object->handler();
-                    foreach ($batch as $step) {
-                        if ($step instanceof TeleStepItem) {
-                            if ($step->condition($args)) {
-                                $break = $step->callback($update, $args['user']);
-                            }
-                            if ($break) break;
-                        }
+                if (class_exists($step_class)) {
+                    $break = self::process_step($step_class, $args, $bot, $update);
+                }
+
+                if ($break) break;
+            }
+        }
+    }
+
+    private static function process_step($step_class, $args, $bot, $update)
+    {
+        $break = false;
+
+        $step_object = app()->make($step_class);
+        if ($step_object->trigger($args)) {
+            $step_object->set_parameters($bot, $args);
+
+            $batch = (array) $step_object->handler();
+            foreach ($batch as $step) {
+                if ($step instanceof TeleStepItem) {
+                    if ($step->condition($args)) {
+                        $break = $step->callback($update, $args['user']);
                     }
+                    if ($break) break;
                 }
             }
-
-            if ($break) break;
         }
+
+        return $break;
     }
 }
