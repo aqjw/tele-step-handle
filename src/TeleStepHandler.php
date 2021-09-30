@@ -21,7 +21,7 @@ class TeleStepHandler
     private static function prepare_params($update)
     {
         if (empty($update->channel_post)) {
-            $message = $update->message ?? $update->callback_query->message ?? null;
+            $message = $update->message ?? $update->callback_query->message ?? $update->edited_message ?? null;
             $is_channel = false;
         } else {
             $message = $update->channel_post;
